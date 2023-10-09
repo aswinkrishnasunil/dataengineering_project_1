@@ -16,11 +16,16 @@ import time
 #option.add_argument("start-maximized")
 
 
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+#option = webdriver.Chrome(service=Service(ChromeDriverManager().install())) ## Create a Chrome WebDriver instance
+options=webdriver.ChromeOptions()
+options.add_argument('--headless')
+driver= webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=options)
+#driver.maximize_window()
 driver.get('https://edition.cnn.com/markets?utm_source=business_ribbon')
 
 title = driver.title
 eles=driver.find_elements(By.XPATH,'//a[@class="basic-table__link-1GsgPj cnn-pcl-12a2lqo"]')
+#XPath provides a way to locate elements within an XML or HTML document by defining paths to elements 
 
 #print(eles.text)
 #driver.quit()    
@@ -33,11 +38,13 @@ for a_element in eles:
         
 print (mylist)
 
-# Don't forget to close the WebDriver when you're done
+
 driver.quit()
 
-
-driver1 = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+#used to close and terminate the web browser session created by the WebDriver
+options=webdriver.ChromeOptions()
+options.add_argument('--headless')
+driver1 = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=options)
 
 
 #title1 = driver.title
@@ -50,12 +57,13 @@ for query in mylist:
         search_element = driver1.find_element(By.XPATH,'//*[@id="yfin-usr-qry"]')
         search_element.clear()
         WebDriverWait(driver1, 3).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="yfin-usr-qry"]')))
+        #the code  provided is waiting for a specific part of a web page to become "clickable" before doing something with it.
 
-        search_element.send_keys(query)
+        search_element.send_keys(query) #whatever value is stored in query will be typed into the input field represented by search_element.
 
-        time.sleep(3)
+        time.sleep(3) # pause the execution of the script for 3 seconds.
 
-        search_element.send_keys(Keys.ENTER)
+        search_element.send_keys(Keys.ENTER) #This part specifies the key to be pressed, in this case, the "Enter" key.
 
         try:
 
